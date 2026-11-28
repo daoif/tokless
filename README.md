@@ -53,14 +53,20 @@ npx tokless install --target agy       # 仅挂载 Google Antigravity（claude /
 npx tokless uninstall --target all     # 一键卸载并无损还原宿主原有配置
 ```
 
-不想切终端？直接把下面这句话发给你的 AI 编程助手即可：
+不想切终端？直接把下面这段提示词发给你的 AI 编程助手（自动识别当前宿主、适配非原生工具并处理网络降级，装完自动实跑验真）：
 
 ```text
-请运行 npx tokless install 帮我安装启用 tokless 省流套件，装好后确认技能与省流规则已生效。
+请帮我安装启用 tokless 省流套件（要求 Node.js >= 18；若本地已有 tokless 副本直接复用，勿动我的项目业务源码）。
+先做两项判断：
+1. 宿主判断：确认你当前是否属于 tokless 原生支持的 Antigravity / Claude Code / Codex。属于则只针对当前宿主执行安装；不属于（如 Cursor / Windsurf / Cline / Trae / OpenCode 等）则安装全局 CLI（或保留到固定持久目录），并把 skills 与省流规则适配到本宿主的技能/规则机制（按本宿主工具名改写读取参数与 CLI 路径；优先写用户级全局配置，若只能写项目级规则文件则仅追加合并、严禁覆盖原有规则）。
+2. 网络与安装降级：优先跑 npx -y tokless@latest install；若 npx/npm/默认源不可用或超时，按顺序降级：切换国内镜像源（https://registry.npmmirror.com）重试 npx 或 npm i -g tokless → 下载 npm tarball 解压到固定目录后跑 node bin/tokless.js install → 拉取 GitHub 源码包（daoif/tokless）解压到固定目录安装。
+安装完成后不要只跑完 install 就宣布生效，必须实跑验收并汇报：
+- 在当前项目（无代码则用 tokless 自身目录）实跑一次 skeleton、slice、audit project 并贴出真实结果摘录；
+- 明确列出写入/改动的文件路径、是否需要重载窗口生效，以及本宿主不支持的能力（如无 PreToolUse 钩子、无原生适配器或无会话账单审计）。
 ```
 
-> **使用 Cursor、Windsurf、Cline、Roo Code、Trae、OpenCode 等其他工具？**
-> 运行 `npm i -g tokless`，再把 [`rules/AGENTS.md`](./rules/AGENTS.md) 复制到项目根目录（或对应编辑器的规则文件）即可立享核心省流能力。各宿主具体安装目录详见 [原理与各工具挂载说明](./docs/why-tokless.md)。
+> **偏好手动配置 Cursor / Windsurf / Cline / Roo Code / Trae / OpenCode？**
+> 运行 `npm i -g tokless`，再将 [`rules/AGENTS.md`](./rules/AGENTS.md) 追加到对应编辑器的全局或项目规则文件即可。各宿主具体安装目录详见 [原理与各工具挂载说明](./docs/why-tokless.md)。
 
 ---
 

@@ -53,14 +53,20 @@ npx tokless install --target agy       # Target agy, claude, codex, or all
 npx tokless uninstall --target all     # Cleanly remove and restore original host settings
 ```
 
-Or paste one prompt straight into your AI coding agent:
+Prefer letting your AI coding agent handle setup? Paste the prompt below (auto-detects your host, adapts non-native agents safely, falls back cleanly on network issues, and verifies with real runs):
 
 ```text
-Please run `npx tokless install` to enable tokless and confirm that the skills and lean-reading rules are active.
+Please install and enable the tokless token-saving toolkit for me (requires Node.js >= 18; reuse any existing local copy if present, and do not modify my project source code).
+Check two things first:
+1. Host detection: Check whether you are one of the natively supported hosts (Antigravity / Claude Code / Codex). If yes, install only for the current host. If not (e.g. Cursor / Windsurf / Cline / Roo Code / Trae / OpenCode), install the global CLI (or keep tokless in a persistent directory) and adapt its skills and lean-reading rules to this host's own skills/rules mechanism (rewrite file-read tool names/params and CLI paths to match this host; prefer user-level global config, and if only project-level rules are supported, append/merge without overwriting existing rules).
+2. Network & install fallback: Try `npx -y tokless@latest install` first. If npx/npm or the default registry fails or times out, fall back in order: retry `npx` or `npm i -g tokless` with a working registry mirror → download the npm tarball to a persistent directory and run `node bin/tokless.js install` → download the GitHub source archive (`daoif/tokless`) to a persistent directory and install from there.
+Do not claim success just because install exited 0. Verify and report with real evidence:
+- Run `skeleton`, `slice`, and `audit project` once against this project (or tokless's own directory if no code is present) and quote real output snippets.
+- List the exact file paths created/modified, whether a reload/restart is needed, and which capabilities this host does not support (e.g. no PreToolUse hook, no native adapter, or no session audit).
 ```
 
-> **Using Cursor, Windsurf, Cline, Roo Code, Trae, or OpenCode?**
-> Run `npm i -g tokless` and copy [`rules/AGENTS.md`](./rules/AGENTS.md) into your repository root `AGENTS.md` (or editor rule file). See [Core Mechanics & Per-Host Setup](./docs/why-tokless.en.md) for details.
+> **Prefer manual setup for Cursor, Windsurf, Cline, Roo Code, Trae, or OpenCode?**
+> Run `npm i -g tokless` and append [`rules/AGENTS.md`](./rules/AGENTS.md) to your editor's global or project rule file. See [Core Mechanics & Per-Host Setup](./docs/why-tokless.en.md) for per-host paths.
 
 ---
 
